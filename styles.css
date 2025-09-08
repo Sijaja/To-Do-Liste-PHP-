@@ -10,7 +10,8 @@ body {
     color: #333;
     padding: 20px;
     /*Background*/
-    background: lightblue;
+    background: #FFC url(n487.png) repeat;
+    /* background: rgb(173, 216, 230); */
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -90,7 +91,7 @@ button {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-top: 10px;
+    margin-top: 0%;
 }
 
 button:hover {
@@ -103,3 +104,53 @@ button:active {
     box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
 }
 
+table {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+th {
+    background: rgb(81, 126, 126);
+    color: white;
+    padding: 20px 15px;
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 14px;
+}
+
+td {
+    padding: 18px 15px;
+    border-bottom: 1px solid #e8ecef;
+    vertical-align: middle;
+    font-size: 16px;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: white;
+}
+
+tbody tr {
+    transition: all 0.3s ease;
+}
+
+tbody tr:hover {
+    background-color: #e3f2fd !important;
+    transform: translateY(-1px);
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+}
