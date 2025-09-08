@@ -100,40 +100,24 @@ function matchesFilter($task, $filter)
             </tr>
 
             <?php foreach ($_SESSION['tasks'] as $task): ?>
-
                 <?php if (matchesFilter($task, $filter)): ?>
-
                     <tr class="<?= $task['done'] ? 'done' : '' ?>">
-
                         <td><?= $task['text'] ?></td>
-
                         <td><?= $task['category'] ?></td>
-
                         <td><?= $task['priority'] ?></td>
-
                         <td><?= $task['done'] ? 'Erledigt' : 'Offen' ?></td>
-
                         <td>
-
                             <form method="post" style="display:inline;">
-
                                 <?php if (!$task['done']): ?>
-
                                     <button name="done" value="<?= $task['id'] ?>">Erledigt</button>
-
                                 <?php endif; ?>
-
                                 <button name="delete" value="<?= $task['id'] ?>">Löschen</button>
-
                             </form>
-
                         </td>
-
                     </tr>
-
                 <?php endif; ?>
-
             <?php endforeach; ?>
+
         </table>
     </div>
 </body>
