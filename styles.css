@@ -159,3 +159,13 @@ tbody tr:hover {
     text-decoration: line-through;
     color: rgb(187, 187, 187);
 }
+
+td.actions {
+    display: flex;
+    gap: 5px;
+}
+
+td.task-text {
+    max-width: 300px;
+    word-wrap: break-word;
+}
