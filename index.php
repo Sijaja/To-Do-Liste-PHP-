@@ -31,25 +31,16 @@ $filter = $_POST['filter'] ?? 'all';
 
 function matchesFilter($task, $filter)
 {
-    if ($filter === 'all')
-        return true;
-    if ($filter === 'done')
-        return $task['done'];
-    if ($filter === 'open')
-        return !$task['done'];
-    if ($filter === 'category')
-        return $task['Arbeit'];
-    if ($filter === 'category')
-        return $task['Privat'];
-    if ($filter === 'category')
-        return $task['Schule'];
-    if ($filter === 'priority')
-        return $task['hoch'];
-    if ($filter === 'priority')
-        return $task['mittel'];
-    if ($filter === 'priority')
-        return $task['niedrig'];
-    return $task['category'] === $filter || $task['priority'] === $filter;
+    switch ($filter) {
+        case 'all':
+            return true;
+        case 'done':
+            return $task['done'];
+        case 'open':
+            return !$task['done'];
+        default:
+            return $task['category'] === $filter || $task['priority'] === $filter;
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -57,7 +48,7 @@ function matchesFilter($task, $filter)
 
 <head>
     <link rel="stylesheet" type="text/css" href="./styles.css">
-    <title>Contact me</title>
+    <title>Aufgaben Planer V0.1</title>
 </head>
 
 <body>
