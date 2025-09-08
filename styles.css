@@ -154,3 +154,8 @@ tbody tr:hover {
     transform: translateY(-1px);
     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
 }
+
+.done {
+    text-decoration: line-through;
+    color: rgb(187, 187, 187);
+}
