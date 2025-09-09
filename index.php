@@ -1,60 +1,84 @@
 <?php
 session_start();
-if (!isset($_SESSION["tasks"])) {
-    $_SESSION["tasks"] = [];
+
+require_once __DIR__ . "/../../config.php";
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
 }
+
+if (isset($_POST['logout'])) {
+    session_unset();
+    session_destroy();
+
+    header("Location: login.php");
+    exit;
+}
+
+$user_id = $_SESSION['user_id'];
+
 if (isset($_POST["add"])) {
-    $task = [
-        "id" => uniqid(),
-        "text" => htmlspecialchars($_POST["text"]),
-        "category" => $_POST["category"],
-        "priority" => $_POST["priority"],
-        "done" => false
-    ];
-    $_SESSION["tasks"][] = $task;
+    $text = htmlspecialchars($_POST["text"]);
+    $category = $_POST["category"];
+    $priority = $_POST["priority"];
+
+    $stmt = $conn->prepare("INSERT INTO tasks (text, category, priority, done, user_id) VALUES (?, ?, ?, 0, ?)");
+    $stmt->bind_param("sssi", $text, $category, $priority, $user_id);
+    $stmt->execute();
+    $stmt->close();
 }
 
 if (isset($_POST["done"])) {
-    foreach ($_SESSION["tasks"] as &$task) {
-        if ($task["id"] === $_POST["done"]) {
-            $task["done"] = true;
-        }
-    }
-    unset($task);
+    $id = intval($_POST["done"]);
+    $conn->query("UPDATE tasks SET done = 1 WHERE id = $id");
 }
-if (isset($_POST['delete'])) {
-    $_SESSION['tasks'] = array_filter($_SESSION['tasks'], function ($task) {
-        return $task['id'] !== $_POST['delete'];
-    });
+
+if (isset($_POST["delete"])) {
+    $id = intval($_POST["delete"]);
+    $conn->query("DELETE FROM tasks WHERE id = $id");
 }
-$filter = $_POST['filter'] ?? 'all';
+
+$filter = isset($_POST['filter']) ? $_POST['filter'] : 'all';
+
+
+$stmt = $conn->prepare("SELECT * FROM tasks WHERE user_id = ? ORDER BY id DESC");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$tasks = [];
+while ($row = $result->fetch_assoc()) {
+    $tasks[] = $row;
+}
 
 function matchesFilter($task, $filter)
 {
-    switch ($filter) {
-        case 'all':
-            return true;
-        case 'done':
-            return $task['done'];
-        case 'open':
-            return !$task['done'];
-        default:
-            return $task['category'] === $filter || $task['priority'] === $filter;
-    }
+    if ($filter === 'all')
+        return true;
+    if ($filter === 'done')
+        return $task['done'];
+    if ($filter === 'open')
+        return !$task['done'];
+    return $task['category'] === $filter || $task['priority'] === $filter;
 }
 ?>
+
 <!DOCTYPE html>
-<html>
+<html lang="de">
 
 <head>
     <link rel="stylesheet" type="text/css" href="./styles.css">
-    <title>Aufgaben Planer V0.1</title>
+    <title>Aufgaben Planer V0.3</title>
 </head>
 
 <body>
     <div class="container">
         <form method="post">
-            <h3>Aufgaben Planer V0.1</h3>
+            <button id="log" type="submit" name="logout">Logout</button>
+        </form>
+
+        <form method="post">
+            <h3>Aufgaben Planer V0.3</h3>
             <label for="text">Aufgabe:</label>
             <input name="text" placeholder="Aufgabe" required>
             <div class="properties">
@@ -71,7 +95,9 @@ function matchesFilter($task, $filter)
             </div>
             <button type="submit" name="add">Aufgabe hinzufügen</button>
         </form>
+
         <br>
+
         <form method="post">
             <div name="filter" class="properties">
                 <label for="filter">Filter nach:</label>
@@ -89,6 +115,7 @@ function matchesFilter($task, $filter)
                 <button>anwenden</button><br>
             </div>
         </form>
+
         <h3>Aufgabenliste</h3>
         <table>
             <tr>
@@ -99,25 +126,30 @@ function matchesFilter($task, $filter)
                 <th>Aktionen</th>
             </tr>
 
-            <?php foreach ($_SESSION['tasks'] as $task): ?>
-                <?php if (matchesFilter($task, $filter)): ?>
-                    <tr class="<?= $task['done'] ? 'done' : '' ?>">
-                        <td><?= $task['text'] ?></td>
-                        <td><?= $task['category'] ?></td>
-                        <td><?= $task['priority'] ?></td>
-                        <td><?= $task['done'] ? 'Erledigt' : 'Offen' ?></td>
-                        <td>
-                            <form method="post" style="display:inline;">
-                                <?php if (!$task['done']): ?>
-                                    <button name="done" value="<?= $task['id'] ?>">Erledigt</button>
-                                <?php endif; ?>
-                                <button name="delete" value="<?= $task['id'] ?>">Löschen</button>
-                            </form>
-                        </td>
-                    </tr>
-                <?php endif; ?>
-            <?php endforeach; ?>
-
+            <?php if (count($tasks) > 0): ?>
+                <?php foreach ($tasks as $task): ?>
+                    <?php if (matchesFilter($task, $filter)): ?>
+                        <tr class="<?= $task['done'] ? 'done' : '' ?>">
+                            <td><?= htmlspecialchars($task['text']) ?></td>
+                            <td><?= htmlspecialchars($task['category']) ?></td>
+                            <td><?= htmlspecialchars($task['priority']) ?></td>
+                            <td><?= $task['done'] ? 'Erledigt' : 'Offen' ?></td>
+                            <td>
+                                <form method="post" style="display:inline;">
+                                    <?php if (!$task['done']): ?>
+                                        <button name="done" value="<?= $task['id'] ?>">Erledigt</button>
+                                    <?php endif; ?>
+                                    <button name="delete" value="<?= $task['id'] ?>">Löschen</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="5">noch keine Aufgaben!</td>
+                </tr>
+            <?php endif; ?>
         </table>
     </div>
 </body>

@@ -1,14 +1,6 @@
 <?php
 session_start();
-$servername = "localhost";
-$username = "root";
-$password = "4659802";
-$dbname = "sijajhit_aufgabenplaner";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require_once __DIR__ . "/../../config.php";
 
 if (isset($_POST["signup"])) {
     $uname = htmlspecialchars($_POST["username"]);

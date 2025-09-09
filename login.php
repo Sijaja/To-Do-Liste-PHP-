@@ -1,14 +1,6 @@
 <?php
 session_start();
-$servername = "localhost";
-$username = "root";
-$password = "4659802";
-$dbname = "sijajhit_aufgabenplaner";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require_once __DIR__ . "/../../config.php";
 
 /* $hash = password_hash("1234", PASSWORD_DEFAULT);
 $create = $conn->prepare("INSERT INTO users (user_name, password_hash) VALUES ('ibisacam', '$hash')");
@@ -29,7 +21,7 @@ if (isset($_POST["login"])) {
         if (password_verify($pword, $row['password_hash'])) {
             $_SESSION['user_id'] = $row['id'];
             $_SESSION['username'] = $uname;
-            header("Location: index_V0.2.php");
+            header("Location: index.php");
             exit;
         } else {
             $error = "Falsches Passwort!";
@@ -54,6 +46,9 @@ if (isset($_POST["login"])) {
         <form method="post">
             <h3>Aufgaben Planer V0.3</h3>
             <h4>User Login</h4>
+            <?php if (!empty($error)): ?>
+                <p id="center" style="color:red;"><?= $error ?></p>
+            <?php endif; ?>
             <input type="text" name="username" placeholder="username">
             <input type="password" name="password" placeholder="password">
             <button type="submit" name="login">login</button>
