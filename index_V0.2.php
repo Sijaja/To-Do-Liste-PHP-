@@ -16,22 +16,22 @@ if ($conn->connect_error) {
 }
 
 if (isset($_POST['logout'])) {
-    // Clear the session
     session_unset();
     session_destroy();
 
-    // Redirect back to login page
     header("Location: login.php");
     exit;
 }
+
+$user_id = $_SESSION['user_id'];
 
 if (isset($_POST["add"])) {
     $text = htmlspecialchars($_POST["text"]);
     $category = $_POST["category"];
     $priority = $_POST["priority"];
 
-    $stmt = $conn->prepare("INSERT INTO tasks (text, category, priority, done) VALUES (?, ?, ?, 0)");
-    $stmt->bind_param("sss", $text, $category, $priority);
+    $stmt = $conn->prepare("INSERT INTO tasks (text, category, priority, done, user_id) VALUES (?, ?, ?, 0, ?)");
+    $stmt->bind_param("sssi", $text, $category, $priority, $user_id);
     $stmt->execute();
     $stmt->close();
 }
@@ -48,7 +48,11 @@ if (isset($_POST["delete"])) {
 
 $filter = isset($_POST['filter']) ? $_POST['filter'] : 'all';
 
-$result = $conn->query("SELECT * FROM tasks ORDER BY id DESC");
+
+$stmt = $conn->prepare("SELECT * FROM tasks WHERE user_id = ? ORDER BY id DESC");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
 $tasks = [];
 while ($row = $result->fetch_assoc()) {
     $tasks[] = $row;
@@ -71,7 +75,7 @@ function matchesFilter($task, $filter)
 
 <head>
     <link rel="stylesheet" type="text/css" href="./styles.css">
-    <title>Aufgaben Planer V0.2</title>
+    <title>Aufgaben Planer V0.3</title>
 </head>
 
 <body>
@@ -81,7 +85,7 @@ function matchesFilter($task, $filter)
         </form>
 
         <form method="post">
-            <h3>Aufgaben Planer V0.2</h3>
+            <h3>Aufgaben Planer V0.3</h3>
             <label for="text">Aufgabe:</label>
             <input name="text" placeholder="Aufgabe" required>
             <div class="properties">

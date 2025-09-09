@@ -38,6 +38,7 @@ if (isset($_POST["login"])) {
         $error = "Benutzer nicht gefunden!";
     }
     $stmt->close();
+
 }
 ?>
 <!DOCTYPE html>
@@ -45,17 +46,18 @@ if (isset($_POST["login"])) {
 
 <head>
     <link rel="stylesheet" type="text/css" href="./styles.css">
-    <title>Login | Aufgaben Planer V0.2</title>
+    <title>Login | Aufgaben Planer V0.3</title>
 </head>
 
 <body>
     <div class="smallContainer">
         <form method="post">
-            <h3>Aufgaben Planer V0.2</h3>
+            <h3>Aufgaben Planer V0.3</h3>
             <h4>User Login</h4>
             <input type="text" name="username" placeholder="username">
             <input type="password" name="password" placeholder="password">
             <button type="submit" name="login">login</button>
+            <a href="signup.php">Konto erstellen</a>
         </form>
     </div>
 </body>

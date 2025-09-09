@@ -202,3 +202,12 @@ td.task-text {
     max-width: 300px;
     word-wrap: break-word;
 }
+
+a {
+    color: rgb(70, 180, 180);
+    align-self: center;
+}
+
+#center {
+    text-align: center;
+}
