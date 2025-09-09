@@ -1,12 +1,28 @@
 <?php
-$servername = "localhost";  
-$username   = "sijajhit_aufgabe";  
-$password   = "LAWhajadida19((";  
-$dbname     = "sijajhit_aufgabenplaner";  
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$servername = "localhost";
+$username = "root";
+$password = "4659802";
+$dbname = "sijajhit_aufgabenplaner";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
+}
+
+if (isset($_POST['logout'])) {
+    // Clear the session
+    session_unset();
+    session_destroy();
+
+    // Redirect back to login page
+    header("Location: login.php");
+    exit;
 }
 
 if (isset($_POST["add"])) {
@@ -38,95 +54,107 @@ while ($row = $result->fetch_assoc()) {
     $tasks[] = $row;
 }
 
-function matchesFilter($task, $filter) {
-    if ($filter === 'all') return true;
-    if ($filter === 'done') return $task['done'];
-    if ($filter === 'open') return !$task['done'];
+function matchesFilter($task, $filter)
+{
+    if ($filter === 'all')
+        return true;
+    if ($filter === 'done')
+        return $task['done'];
+    if ($filter === 'open')
+        return !$task['done'];
     return $task['category'] === $filter || $task['priority'] === $filter;
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <link rel="stylesheet" type="text/css" href="./styles.css">
     <title>Aufgaben Planer V0.2</title>
 </head>
+
 <body>
-<div class="container">
+    <div class="container">
+        <form method="post">
+            <button id="log" type="submit" name="logout">Logout</button>
+        </form>
 
-    <form method="post">
-        <h3>Aufgaben Planer V0.2</h3>
-        <label for="text">Aufgabe:</label>
-        <input name="text" placeholder="Aufgabe" required>
-        <div class="properties">
-            <select id="category" name="category">
-                <option value="Arbeit">Arbeit</option>
-                <option value="Privat">Privat</option>
-                <option value="Schule">Schule</option>
-            </select>
-            <select name="priority" id="priority">
-                <option value="hoch">hoch</option>
-                <option value="mittel">mittel</option>
-                <option value="niedrig">niedrig</option>
-            </select>
-        </div>
-        <button type="submit" name="add">Aufgabe hinzufügen</button>
-    </form>
+        <form method="post">
+            <h3>Aufgaben Planer V0.2</h3>
+            <label for="text">Aufgabe:</label>
+            <input name="text" placeholder="Aufgabe" required>
+            <div class="properties">
+                <select id="category" name="category">
+                    <option value="Arbeit">Arbeit</option>
+                    <option value="Privat">Privat</option>
+                    <option value="Schule">Schule</option>
+                </select>
+                <select name="priority" id="priority">
+                    <option value="hoch">hoch</option>
+                    <option value="mittel">mittel</option>
+                    <option value="niedrig">niedrig</option>
+                </select>
+            </div>
+            <button type="submit" name="add">Aufgabe hinzufügen</button>
+        </form>
 
-    <br>
+        <br>
 
-    <form method="post">
-        <div name="filter" class="properties">
-            <label for="filter">Filter nach:</label>
-            <select name="filter" id="filter">
-                <option value="all" <?= $filter === 'all' ? 'selected' : '' ?>>Alle</option>
-                <option value="done" <?= $filter === 'done' ? 'selected' : '' ?>>nur erledigte</option>
-                <option value="open" <?= $filter === 'open' ? 'selected' : '' ?>>nur offene</option>
-                <option value="Arbeit" <?= $filter === 'Arbeit' ? 'selected' : '' ?>>Arbeit</option>
-                <option value="Privat" <?= $filter === 'Privat' ? 'selected' : '' ?>>Privat</option>
-                <option value="Schule" <?= $filter === 'Schule' ? 'selected' : '' ?>>Schule</option>
-                <option value="hoch" <?= $filter === 'hoch' ? 'selected' : '' ?>>hoch</option>
-                <option value="mittel" <?= $filter === 'mittel' ? 'selected' : '' ?>>mittel</option>
-                <option value="niedrig" <?= $filter === 'niedrig' ? 'selected' : '' ?>>niedrig</option>
-            </select>
-            <button>anwenden</button><br>
-        </div>
-    </form>
+        <form method="post">
+            <div name="filter" class="properties">
+                <label for="filter">Filter nach:</label>
+                <select name="filter" id="filter">
+                    <option value="all" <?= $filter === 'all' ? 'selected' : '' ?>>Alle</option>
+                    <option value="done" <?= $filter === 'done' ? 'selected' : '' ?>>nur erledigte</option>
+                    <option value="open" <?= $filter === 'open' ? 'selected' : '' ?>>nur offene</option>
+                    <option value="Arbeit" <?= $filter === 'Arbeit' ? 'selected' : '' ?>>Arbeit</option>
+                    <option value="Privat" <?= $filter === 'Privat' ? 'selected' : '' ?>>Privat</option>
+                    <option value="Schule" <?= $filter === 'Schule' ? 'selected' : '' ?>>Schule</option>
+                    <option value="hoch" <?= $filter === 'hoch' ? 'selected' : '' ?>>hoch</option>
+                    <option value="mittel" <?= $filter === 'mittel' ? 'selected' : '' ?>>mittel</option>
+                    <option value="niedrig" <?= $filter === 'niedrig' ? 'selected' : '' ?>>niedrig</option>
+                </select>
+                <button>anwenden</button><br>
+            </div>
+        </form>
 
-    <h3>Aufgabenliste</h3>
-    <table>
-        <tr>
-            <th>Aufgabe</th>
-            <th>Kategorie</th>
-            <th>Priorität</th>
-            <th>Status</th>
-            <th>Aktionen</th>
-        </tr>
+        <h3>Aufgabenliste</h3>
+        <table>
+            <tr>
+                <th>Aufgabe</th>
+                <th>Kategorie</th>
+                <th>Priorität</th>
+                <th>Status</th>
+                <th>Aktionen</th>
+            </tr>
 
-        <?php if (count($tasks) > 0): ?>
-            <?php foreach ($tasks as $task): ?>
-                <?php if (matchesFilter($task, $filter)): ?>
-                    <tr class="<?= $task['done'] ? 'done' : '' ?>">
-                        <td><?= htmlspecialchars($task['text']) ?></td>
-                        <td><?= htmlspecialchars($task['category']) ?></td>
-                        <td><?= htmlspecialchars($task['priority']) ?></td>
-                        <td><?= $task['done'] ? 'Erledigt' : 'Offen' ?></td>
-                        <td>
-                            <form method="post" style="display:inline;">
-                                <?php if (!$task['done']): ?>
-                                    <button name="done" value="<?= $task['id'] ?>">Erledigt</button>
-                                <?php endif; ?>
-                                <button name="delete" value="<?= $task['id'] ?>">Löschen</button>
-                            </form>
-                        </td>
-                    </tr>
-                <?php endif; ?>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <tr><td colspan="5">noch keine Aufgaben!</td></tr>
-        <?php endif; ?>
-    </table>
-</div>
+            <?php if (count($tasks) > 0): ?>
+                <?php foreach ($tasks as $task): ?>
+                    <?php if (matchesFilter($task, $filter)): ?>
+                        <tr class="<?= $task['done'] ? 'done' : '' ?>">
+                            <td><?= htmlspecialchars($task['text']) ?></td>
+                            <td><?= htmlspecialchars($task['category']) ?></td>
+                            <td><?= htmlspecialchars($task['priority']) ?></td>
+                            <td><?= $task['done'] ? 'Erledigt' : 'Offen' ?></td>
+                            <td>
+                                <form method="post" style="display:inline;">
+                                    <?php if (!$task['done']): ?>
+                                        <button name="done" value="<?= $task['id'] ?>">Erledigt</button>
+                                    <?php endif; ?>
+                                    <button name="delete" value="<?= $task['id'] ?>">Löschen</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="5">noch keine Aufgaben!</td>
+                </tr>
+            <?php endif; ?>
+        </table>
+    </div>
 </body>
+
 </html>
