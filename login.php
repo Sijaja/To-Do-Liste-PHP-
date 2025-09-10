@@ -52,7 +52,10 @@ if (isset($_POST["login"])) {
             <input type="text" name="username" placeholder="username">
             <input type="password" name="password" placeholder="password">
             <button type="submit" name="login">login</button>
-            <a href="signup.php">Konto erstellen</a>
+            <div class="links">
+                <a href="resetpw.php">Passwort vergessen?</a>
+                <a href="signup.php">Konto erstellen</a>
+            </div>
         </form>
     </div>
 </body>

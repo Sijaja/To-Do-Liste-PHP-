@@ -15,8 +15,9 @@ body {
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     padding: 20px;
+    gap: 10px;
 }
 
 .container {
@@ -25,8 +26,13 @@ body {
     padding: 40px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
-    width: 100%;
+    width: 80%;
     max-width: 1000px;
+}
+
+#profilePic {
+    object-fit: cover;
+    align-self: center;
 }
 
 .smallContainer {
@@ -38,6 +44,42 @@ body {
     width: 100%;
     max-width: 500px;
 }
+
+.sideBanner {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    width: 20%;
+    max-width: 180px;
+    row-gap: 10px;
+}
+
+.photo {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    width: 100px;
+    height: 100px;
+    max-width: 180px;
+    align-content: center;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.divText {
+    font-size: clamp(1rem, 1.5rem, 1.5rem);
+    max-width: 120px;
+    color: #2c3e50;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+}
+
 
 h3 {
     color: #2c3e50;
@@ -52,6 +94,13 @@ h4 {
     text-align: center;
     margin-bottom: 10px;
     font-size: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h5 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 10px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -125,6 +174,45 @@ button {
     margin-top: 0%;
     width: 120px;
     align-self: flex-end;
+}
+
+#side {
+    background: rgb(81, 126, 126);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    width: 100px;
+    align-self: flex-end;
+    align-content: center;
+    text-align: center;
+    justify-content: center;
+    padding: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#tableButton {
+    background: rgb(81, 126, 126);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    width: 100px;
+    text-align: center;
+    justify-content: center;
+    padding: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    justify-self: end;
 }
 
 button:hover {
@@ -210,4 +298,11 @@ a {
 
 #center {
     text-align: center;
+}
+
+.links {
+    display: flex;
+    align-content: center;
+    align-self: center;
+    gap: 20px;
 }

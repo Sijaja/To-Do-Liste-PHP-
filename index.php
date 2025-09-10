@@ -41,6 +41,12 @@ if (isset($_POST["delete"])) {
 
 $filter = isset($_POST['filter']) ? $_POST['filter'] : 'all';
 
+$stmt2 = $conn->prepare('SELECT user_name FROM users WHERE id = ?');
+$stmt2->bind_param("i", $user_id);
+$stmt2->execute();
+$users = $stmt2->get_result();
+$row = $users->fetch_assoc();
+$username = $row['user_name'];
 
 $stmt = $conn->prepare("SELECT * FROM tasks WHERE user_id = ? ORDER BY id DESC");
 $stmt->bind_param("i", $user_id);
@@ -68,17 +74,31 @@ function matchesFilter($task, $filter)
 
 <head>
     <link rel="stylesheet" type="text/css" href="./styles.css">
-    <title>Aufgaben Planer V0.3</title>
+    <title>Aufgaben Planer V0.4</title>
 </head>
 
 <body>
+    <div class="sideBanner">
+        <div class="photo">
+            <form method="post">
+                <img src="./img/ap_profile.png" height="100" width="100" id="profilePic">
+            </form>
+        </div>
+        <div class="divText">
+            <h5><?= htmlspecialchars($username) ?></h5>
+        </div>
+        <form method="post">
+            <div>
+                <button id="side" name="profile">Profile</button>
+                <button id="side" name="settings">Settings</button>
+                <button id="side" name="about">about</button>
+                <button id="side" name="logout">sign out</button>
+            </div>
+        </form>
+    </div>
     <div class="container">
         <form method="post">
-            <button id="log" type="submit" name="logout">Logout</button>
-        </form>
-
-        <form method="post">
-            <h3>Aufgaben Planer V0.3</h3>
+            <h3>Aufgaben Planer V0.4</h3>
             <label for="text">Aufgabe:</label>
             <input name="text" placeholder="Aufgabe" required>
             <div class="properties">
@@ -137,9 +157,9 @@ function matchesFilter($task, $filter)
                             <td>
                                 <form method="post" style="display:inline;">
                                     <?php if (!$task['done']): ?>
-                                        <button name="done" value="<?= $task['id'] ?>">Erledigt</button>
+                                        <button name="done" id="tableButton" value="<?= $task['id'] ?>">Erledigt</button>
                                     <?php endif; ?>
-                                    <button name="delete" value="<?= $task['id'] ?>">Löschen</button>
+                                    <button name="delete" id="tableButton" value="<?= $task['id'] ?>">Löschen</button>
                                 </form>
                             </td>
                         </tr>
