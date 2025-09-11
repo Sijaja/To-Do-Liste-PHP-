@@ -37,6 +37,7 @@ if (isset($_POST["login"])) {
 <html lang="de">
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="./styles.css">
     <title>Login | Aufgaben Planer V0.3</title>
 </head>

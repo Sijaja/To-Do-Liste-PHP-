@@ -16,9 +16,9 @@ if (isset($_POST["signup"])) {
         $error = "Benutzername bereits vergeben!";
     } else {
         $hash = password_hash($pword, PASSWORD_DEFAULT);
-
-        $stmt = $conn->prepare("INSERT INTO users (user_name, email, password_hash) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $uname, $email, $hash);
+        $since = date("Y-m-d");
+        $stmt = $conn->prepare("INSERT INTO users (user_name, email, password_hash, since) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $uname, $email, $hash, $since);
 
         if ($stmt->execute()) {
             $success = "Konto erfolgreich erstellt! <a href='login.php'>Zum Login</a>";
@@ -34,6 +34,7 @@ if (isset($_POST["signup"])) {
 <html lang="de">
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="./styles.css">
     <title>Signup | Aufgaben Planer V0.3</title>
 </head>

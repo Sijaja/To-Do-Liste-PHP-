@@ -22,6 +22,7 @@ if (isset($_POST["send"])) {
 <html lang="de">
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="./styles.css">
     <title>Reset Password | Aufgaben Planer V0.3</title>
 </head>
