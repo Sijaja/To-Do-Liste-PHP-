@@ -1,168 +1,162 @@
-# Aufgaben Planer V0.3 (Task Manager)
+# Aufgaben Planer V0.4 (Advanced Task Manager)
 
-A modern, responsive task management web application built with **PHP**, **MySQL**, and **CSS**. Features user authentication, task categorization, priority levels, and filtering capabilities.
+A modern, feature-rich task management web application built with **PHP**, **MySQL**, **jQuery**, and **CSS**. Features comprehensive user management, task archiving, profile tracking, and an intuitive responsive interface.
 
 ![Task Manager](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![jQuery](https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 
 ---
 
-## Features
+## New Features in V0.4
 
-### User Authentication
+### Enhanced User Profiles
+- **Profile Dashboard** with user photo and member information
+- **Member Since** tracking - shows registration date
+- **Last Login** tracking - automatically updates on logout
+- **Professional Profile UI** with avatar display
+
+### Advanced Archive System
+- **Soft Delete** - deleted tasks move to archive instead of permanent deletion
+- **Task Recovery** - restore tasks from archive back to active list
+- **Permanent Delete** - option to permanently remove archived tasks
+- **Archive View** - dedicated interface to manage deleted tasks
+
+### Modern Interface
+- **Top Navigation Banner** with profile info and quick actions
+- **Toggle Views** - switch between tasks and archive with smooth transitions
+- **Improved Responsive Design** - better mobile and desktop experience
+- **Enhanced Button Styling** - multiple button types for different actions
+
+---
+
+## Core Features
+
+### Complete Authentication System
 - **User Registration** with username, email, and secure password hashing
-- **Login System** with session management
-- **Secure Logout** functionality
-- Input validation and error handling
+- **Login System** with session management and error handling
+- **Password Recovery** option (resetpw.php - not included in current files)
+- **Secure Logout** with last login timestamp update
 
-### Task Management
-- **Add Tasks** with description, category, and priority
-- **Mark as Complete** - toggle task completion status
-- **Delete Tasks** permanently
-- **Task Filtering** by status, category, or priority
-- **Responsive Design** that works on all devices
+### Advanced Task Management
+- **Create Tasks** with description, category, and priority levels
+- **Mark Complete** - toggle task completion status
+- **Soft Delete** - move tasks to archive for later recovery
+- **Smart Filtering** by status, category, or priority
+- **Task Statistics** and user activity tracking
 
-### Organization
+### Organization & Filtering
 - **Categories**: Arbeit (Work), Privat (Personal), Schule (School)
 - **Priority Levels**: Hoch (High), Mittel (Medium), Niedrig (Low)
-- **Status Tracking**: Open vs. Completed tasks
-- **Advanced Filtering**: View tasks by any combination of attributes
+- **Status Filtering**: All, Open, Completed tasks
+- **Archive Management**: View and manage deleted tasks
 
 ---
 
 ## File Structure
 
 ```
-task-manager/
-├── index.php          # Main dashboard (requires authentication)
-├── login.php          # User login page
-├── signup.php         # User registration page
-├── styles.css         # Complete styling and responsive design
-├── config.php         # Database configuration (only an example is included)
-└── README.md          # This file
+aufgaben-planer-v04/
+├── index.php          # Main dashboard with tasks and archive
+├── login.php          # User authentication
+├── signup.php         # User registration
+├── resetpw.php        # Password recovery (referenced)
+├── styles.css         # Complete responsive styling
+├── img/
+│   └── ap_profile.png  # Default profile picture
+├── config.php         # Database configuration (create separately)
+└── README.md          # This documentation
 ```
+## Usage Guide
+
+### Getting Started
+1. **Register** at `/signup.php` with username and email
+2. **Login** at `/login.php` with your credentials
+3. **Dashboard** loads with your profile info and empty task list
+
+### Managing Tasks
+- **Add Tasks**: Use the form to create tasks with category and priority
+- **Complete Tasks**: Click "Erledigt" to mark tasks as done
+- **Delete Tasks**: Click "Löschen" to move tasks to archive
+
+### Using the Archive
+- **View Archive**: Click "Archiv" button in top navigation
+- **Restore Tasks**: Click "Restore" to move tasks back to active list
+- **Permanent Delete**: Click "Löschen" in archive for permanent removal
+
+### Profile Features
+- **Member Info**: View registration date and last login
+- **Profile Picture**: Default avatar with future customization options
+- **Activity Tracking**: System tracks your login patterns
 
 ---
 
-## Installation
+## Design Highlights
 
-### Prerequisites
-- **Web Server** (Apache/Nginx)
-- **PHP 7.4+** with MySQLi extension
-- **MySQL 5.7+** or **MariaDB**
-
-### Setup Steps
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/task-manager.git
-   cd task-manager
-   ```
-
-2. **Create the database**
-   ```sql
-   CREATE DATABASE task_manager;
-   USE task_manager;
-
-   CREATE TABLE users (
-       id INT AUTO_INCREMENT PRIMARY KEY,
-       user_name VARCHAR(50) UNIQUE NOT NULL,
-       email VARCHAR(100),
-       password_hash VARCHAR(255) NOT NULL,
-       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-   );
-
-   CREATE TABLE tasks (
-       id INT AUTO_INCREMENT PRIMARY KEY,
-       text TEXT NOT NULL,
-       category ENUM('Arbeit', 'Privat', 'Schule') NOT NULL,
-       priority ENUM('hoch', 'mittel', 'niedrig') NOT NULL,
-       done TINYINT(1) DEFAULT 0,
-       user_id INT NOT NULL,
-       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-   );
-   ```
-
-3. **Create config.php**
-   ```php
-   <?php
-   $servername = "localhost";
-   $username = "your_db_username";
-   $password = "your_db_password";
-   $dbname = "task_manager";
-
-   $conn = new mysqli($servername, $username, $password, $dbname);
-
-   if ($conn->connect_error) {
-       die("Connection failed: " . $conn->connect_error);
-   }
-   ?>
-   ```
-
-4. **Upload files** to your web server
-5. **Set proper permissions** for PHP files
-6. **Access** your application at `https://yourdomain.com/login.php`
-
----
-
-## Design Features
-
-- **Modern Glass-morphism UI** with backdrop blur effects
-- **Responsive Grid Layout** that adapts to all screen sizes
-- **Custom Background** with repeating pattern
-- **Smooth Animations** and hover effects
-- **Color-coded Priority System**
-- **Clean Typography** with Segoe UI font family
+- **Glass-morphism UI** with backdrop blur effects
+- **Dual-view System** - toggle between tasks and archive
+- **Professional Profile Banner** with user information
+- **Responsive Button Design** - different styles for different actions
+- **Smooth Transitions** using jQuery animations
+- **Mobile-optimized** layout with viewport meta tags
 
 ---
 
 ## Security Features
 
-- **Password Hashing** using PHP's `password_hash()` function
-- **SQL Injection Protection** with prepared statements
-- **XSS Prevention** with `htmlspecialchars()`
+- **Password Hashing** with PHP's `password_hash()` function
+- **SQL Injection Protection** using prepared statements
+- **XSS Prevention** with `htmlspecialchars()` on all outputs
+- **Session Security** with proper session management
+- **Input Validation** on both frontend and backend
+
+---
+
+## Technical Details
+
+### JavaScript Features
+- **jQuery Integration** for smooth UI interactions
+- **View Toggling** between main tasks and archive
+- **Responsive Design** with mobile-first approach
+
+### PHP Features
+- **Object-Oriented Database** interactions with MySQLi
 - **Session Management** for user authentication
-- **Input Validation** on both client and server side
+- **Data Sanitization** for security
+- **Prepared Statements** for database queries
+
+### CSS Features
+- **CSS Grid & Flexbox** for responsive layouts
+- **CSS Variables** for consistent theming
+- **Advanced Animations** with transforms and transitions
+- **Mobile Responsive** design patterns
 
 ---
 
-## Usage
+## Known Issues & Future Features
 
-1. **Register** a new account at `/signup.php`
-2. **Login** with your credentials at `/login.php`
-3. **Add tasks** using the form on the main dashboard
-4. **Filter tasks** by category, priority, or completion status
-5. **Mark tasks complete** or **delete** them as needed
-6. **Logout** securely when finished
+### Current Limitations
+- Profile picture upload not yet implemented
+- Password reset functionality referenced but not included
+- Settings and About pages planned but not implemented
 
----
-
-## Customization
-
-### Adding New Categories
-Edit the `<select>` options in `index.php` and update the database enum:
-```sql
-ALTER TABLE tasks MODIFY COLUMN category ENUM('Arbeit', 'Privat', 'Schule', 'YourNewCategory');
-```
-
-### Changing Colors
-Modify the CSS variables in `styles.css`:
-```css
-:root {
-    --primary-color: rgb(81, 126, 126);
-    --accent-color: rgb(29, 124, 124);
-}
-```
+### Planned Features
+- Custom profile picture uploads
+- Email notifications
+- Task due dates and reminders
+- Export functionality
+- Dark mode theme
 
 ---
 
-## Known Issues
+## Browser Support
 
-- Email field is optional but included in signup form
-- German language interface (easily translatable)
-- Requires manual database setup
+- **Chrome** 80+ (recommended)
+- **Firefox** 75+
+- **Safari** 13+
+- **Edge** 80+
+- **Internet Explorer** not supported
 
 ---
 
@@ -175,18 +169,21 @@ This project is open source and available under the [MIT License](LICENSE).
 ## Contributing
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+2. Create a feature branch (`git checkout -b feature/NewFeature`)
+3. Commit changes (`git commit -m 'Add NewFeature'`)
+4. Push to branch (`git push origin feature/NewFeature`)
 5. Open a Pull Request
 
 ---
 
-## Support
+## 📞 Support & Contact
 
-If you encounter any issues or have questions, please open an issue on GitHub.
+- 🐛 **Bug Reports**: Open an issue on GitHub
+- 💡 **Feature Requests**: Create a feature request issue
+- 📧 **General Questions**: Contact via GitHub discussions
 
 ---
 
-**Version**: 0.3  
-**Last Updated**: September 2025
+**Version**: 0.4  
+**Last Updated**: September 2025  
+**Status**: Active Development
