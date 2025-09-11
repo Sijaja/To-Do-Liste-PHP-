@@ -39,13 +39,13 @@ if (isset($_POST["login"])) {
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="./styles.css">
-    <title>Login | Aufgaben Planer V0.3</title>
+    <title>Login | Aufgaben Planer V0.4</title>
 </head>
 
 <body>
     <div class="smallContainer">
         <form method="post">
-            <h3>Aufgaben Planer V0.3</h3>
+            <h3>Aufgaben Planer V0.4</h3>
             <h4>User Login</h4>
             <?php if (!empty($error)): ?>
                 <p id="center" style="color:red;"><?= $error ?></p>

@@ -36,13 +36,13 @@ if (isset($_POST["signup"])) {
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="./styles.css">
-    <title>Signup | Aufgaben Planer V0.3</title>
+    <title>Signup | Aufgaben Planer V0.4</title>
 </head>
 
 <body>
     <div class="smallContainer">
         <form method="post">
-            <h3>Aufgaben Planer V0.3</h3>
+            <h3>Aufgaben Planer V0.4</h3>
             <h4>neue Konto erstellen</h4>
             <?php if (!empty($error)): ?>
                 <p id="center" style="color:red;"><?= $error ?></p>

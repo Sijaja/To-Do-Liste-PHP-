@@ -45,6 +45,17 @@ if (isset($_POST["delete"])) {
     $conn->query("DELETE FROM tasks WHERE id = $id");
 }
 
+if (isset($_POST["restore"])) {
+    $id = intval($_POST["restore"]);
+    $conn->query("INSERT INTO tasks (text, category, priority, done, user_id) SELECT text, category, priority, done, user_id FROM deleted where id = $id");
+    $conn->query("DELETE FROM deleted WHERE id = $id");
+}
+
+if (isset($_POST["bigdelete"])) {
+    $id = intval($_POST["bigdelete"]);
+    $conn->query("DELETE FROM deleted WHERE id = $id");
+}
+
 $filter = isset($_POST['filter']) ? $_POST['filter'] : 'all';
 
 $stmt2 = $conn->prepare('SELECT user_name, since, last_log FROM users WHERE id = ?');
@@ -205,25 +216,7 @@ function matchesFilterArchiv($delete, $filter)
             <?php endif; ?>
         </table>
     </div>
-    <div class="container" id="profileview">
-        <form method="post">
-            <div name="filter" class="properties">
-                <label for="filter">Filter nach:</label>
-                <select name="filter" id="filter">
-                    <option value="all" <?= $filter === 'all' ? 'selected' : '' ?>>Alle</option>
-                    <option value="done" <?= $filter === 'done' ? 'selected' : '' ?>>nur erledigte</option>
-                    <option value="open" <?= $filter === 'open' ? 'selected' : '' ?>>nur offene</option>
-                    <option value="Arbeit" <?= $filter === 'Arbeit' ? 'selected' : '' ?>>Arbeit</option>
-                    <option value="Privat" <?= $filter === 'Privat' ? 'selected' : '' ?>>Privat</option>
-                    <option value="Schule" <?= $filter === 'Schule' ? 'selected' : '' ?>>Schule</option>
-                    <option value="hoch" <?= $filter === 'hoch' ? 'selected' : '' ?>>hoch</option>
-                    <option value="mittel" <?= $filter === 'mittel' ? 'selected' : '' ?>>mittel</option>
-                    <option value="niedrig" <?= $filter === 'niedrig' ? 'selected' : '' ?>>niedrig</option>
-                </select>
-                <button>anwenden</button><br>
-            </div>
-        </form>
-
+    <div id="profileview" class="container">
         <h3>gelöschte Aufgaben</h3>
         <table>
             <tr>
@@ -245,9 +238,9 @@ function matchesFilterArchiv($delete, $filter)
                             <td>
                                 <form method="post" style="display:inline;">
                                     <?php if (!$delete['done']): ?>
-                                        <button name="done" id="tableButton" value="<?= $delete['id'] ?>">Restore</button>
+                                        <button name="restore" id="tableButton" value="<?= $delete['id'] ?>">Restore</button>
                                     <?php endif; ?>
-                                    <button name="delete" id="tableButton" value="<?= $delete['id'] ?>">Löschen</button>
+                                    <button name="bigdelete" id="tableButton" value="<?= $delete['id'] ?>">Löschen</button>
                                 </form>
                             </td>
                         </tr>
