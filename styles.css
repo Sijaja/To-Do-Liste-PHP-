@@ -31,6 +31,22 @@ body {
     display: block;
 }
 
+.footer {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 40px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    width: 100%;
+    max-width: 1000px;
+    display: block;
+    row-gap: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
 #profilePic {
     object-fit: cover;
     align-self: center;

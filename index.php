@@ -248,10 +248,17 @@ function matchesFilterArchiv($delete, $filter)
                 <?php endforeach; ?>
             <?php else: ?>
                 <tr>
-                    <td colspan="5">noch keine Aufgaben!</td>
+                    <td colspan="5">noch keine gelöschte Aufgaben!</td>
                 </tr>
             <?php endif; ?>
         </table>
+    </div>
+    <div class="footer">
+        <a>Sicherheit</a>
+        <a>Datenschutz</a>
+        <a>Bedingungen</a>
+        <a>Cookie-Einstellungen</a>
+        <a href="https://sijaja.dev">© Sijaja.dev</a>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
